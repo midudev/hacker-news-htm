@@ -12,6 +12,9 @@ const ArticleLink = props => html`<li>
     </div>
   </a>
 </li>`
+const ListOfArticles = ({news}) => html`<ul>
+  ${news.map(article => html`<${ArticleLink} ...${article} />`)}
+</ul>`
 
 class App extends Component {
   state = { news: [] }
@@ -26,12 +29,9 @@ class App extends Component {
     return html`
       <div id="app">
         <${Header} />
-        <ul>
-          ${news.map(article => html`<${ArticleLink} ...${article} />`)}
-        </ul>
+        <${ListOfArticles} news={${news}} />
         <${Footer}>📦 Usando parcel como bundler<//>
-      </div>
-    `;
+      </div>`
   }
 }
 
