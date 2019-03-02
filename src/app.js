@@ -15,21 +15,25 @@ const ArticleLink = props => html`<li>
 const ListOfArticles = ({news}) => html`<ul>
   ${news.map(article => html`<${ArticleLink} ...${article} />`)}
 </ul>`
+const LoadingIndicator = _ => html`<center><i>🌀</i></center>`
 
 class App extends Component {
-  state = { news: [] }
+  state = { loading: true, news: [] }
 
   async componentDidMount () {
     const {getHackerNews} = await import('./domain/getHackerNews')
     const news = await getHackerNews()
-    this.setState({news})
+    this.setState({loading: false, news})
   }
 
-  render(_, { news = [] }) {
+  render(_, { loading, news }) {
     return html`
       <div id="app">
         <${Header} />
-        <${ListOfArticles} news={${news}} />
+        ${loading
+          ? html`<${LoadingIndicator} />`
+          : html`<${ListOfArticles} news={${news}} />`
+        }
         <${Footer}>📦 Usando parcel como bundler<//>
       </div>`
   }
